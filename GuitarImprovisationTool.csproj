@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="assets\guitar24fret.png" />
+    <None Remove="assets\playButton.jpg" />
+    <None Remove="assets\playButton.png" />
+    <None Remove="assets\revertOpacityIcon.JPG" />
+    <None Remove="assets\saveIcon.jpg" />
+    <None Remove="KeyDatabase.db" />
+    <None Remove="NoteDatabase.db" />
+    <None Remove="Red_Hot_Chili_Peppers_-_Scar_Tissue.mid" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="KeyDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoteDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Melanchall.DryWetMidi" Version="6.0.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\guitar24fret.png" />
+    <Resource Include="assets\playButton.jpg" />
+    <Resource Include="assets\revertOpacityIcon.JPG" />
+    <Resource Include="assets\saveIcon.jpg" />
+  </ItemGroup>
+
+</Project>

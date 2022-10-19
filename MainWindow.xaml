@@ -1,0 +1,901 @@
+﻿<Window x:Class="NEA.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NEA"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="675" Width="1200"
+        WindowStyle="None">
+    <Grid x:Name="MainGrid">
+        <Border x:Name="ToolWindowContainer">
+            <Grid x:Name="ToolWindowGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="15*"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" x:Name="WindowBarContainer" Background="#FF999999">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="0.1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Padding="8px" VerticalAlignment="Center" Foreground="White" FontSize="11" FontFamily="Segoe UI Light">Guitar Improvisation Tool</TextBlock>
+                        <Button x:Name="ExitButton" Grid.Column="2" Click="CloseApp">
+                            <TextBlock Padding="8px" Grid.Column="2" VerticalAlignment="Center" Foreground="White" FontSize="11" FontFamily="Segoe UI Semibold" Text="X" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="2"/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" x:Name="SettingsBarContainer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="17*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="0.25*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0.25*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Grid.ColumnSpan="8"  Background="#FFEAEAEA" >
+
+                        </Border>
+
+                        <TextBlock x:Name="SettingsDialogue" Grid.Column="1" FontFamily="Segoe UI Light" VerticalAlignment="Center" FontSize="15px" Text="" TextAlignment="Right" Foreground="Green"/>
+
+                        <TextBlock x:Name="TempoBlock" Grid.Column="3" FontFamily="Segoe UI Light" VerticalAlignment="Center" FontSize="20px" HorizontalAlignment="Center">Tempo:</TextBlock>
+
+                        <TextBox x:Name="TempoBox" Grid.Column="4" FontFamily="Segoe UI Light" VerticalAlignment="Center" FontSize="20px" BorderBrush="#FFEAEAEA" SelectionBrush="#FFEAEAEA" TextAlignment="Center"/>
+
+                        <TextBlock Grid.Column="6" x:Name="PlayButton" MouseLeftButtonDown="PlayButton_MouseLeft">
+                            <TextBlock.Background>
+                                <ImageBrush ImageSource="./assets/playButton.jpg"/>
+                            </TextBlock.Background>
+                        </TextBlock>
+
+                        <DockPanel Grid.Column="0">
+                            <Menu DockPanel.Dock="Left" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Stretch" Margin="0,0,0,0">
+                                <MenuItem Header="   File   " BorderBrush="Gray" VerticalAlignment="Top" FontSize="19.75">
+                                    <MenuItem Header="Save Tab" FontSize="12" Click="SaveTab_Click">
+                                        <MenuItem.Icon>
+                                            <Image Source="./assets/saveIcon.jpg"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </MenuItem>
+                                <MenuItem Header="   Tab   " BorderBrush="Gray" VerticalAlignment="Top" FontSize="19.75">
+                                    <MenuItem Header="Revert Opacity" FontSize="12" Click="RevertOpacity_Click">
+                                        <MenuItem.Icon>
+                                            <Image Source="./assets/revertOpacityIcon.JPG"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Clear Tab" FontSize="12" Click="ClearTab_Click">
+                                        <MenuItem.Icon>
+                                            <Image Source="./assets/revertOpacityIcon.JPG"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Clear Tab Preferences" FontSize="12">
+                                        <MenuItem x:Name="ClearTab_E" Header="E" IsCheckable="True" IsChecked="True" FontSize="12" StaysOpenOnClick="True"/>
+                                        <MenuItem x:Name="ClearTab_A" Header="A" IsCheckable="True" IsChecked="True" FontSize="12" StaysOpenOnClick="True"/>
+                                        <MenuItem x:Name="ClearTab_D" Header="D" IsCheckable="True" IsChecked="True" FontSize="12" StaysOpenOnClick="True"/>
+                                        <MenuItem x:Name="ClearTab_G" Header="G" IsCheckable="True" IsChecked="True" FontSize="12" StaysOpenOnClick="True"/>
+                                        <MenuItem x:Name="ClearTab_B" Header="B" IsCheckable="True" IsChecked="True" FontSize="12" StaysOpenOnClick="True"/>
+                                        <MenuItem x:Name="ClearTab_e" Header="e" IsCheckable="True" IsChecked="True" FontSize="12" StaysOpenOnClick="True"/>
+                                    </MenuItem>
+                                </MenuItem>
+                            </Menu>
+                        </DockPanel>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="2" x:Name="TabBarContainer">
+
+                    <Border x:Name="DropLayer">
+                        <Grid x:Name="DropTabSheet">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--BUFFER FIRST-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2.2*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.2*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Text Block Naming Convention:
+                            
+                            0 ~ String
+                            1 ~ Tab Sheet (Limit to 9)
+                            2 ~ Bar (1,2,3,4)
+                            3 ~ Position (1,2,3,4,5,6,7,8)
+                            
+                            -->
+
+                            <!--TextBlocks e-->
+                            <TextBlock Grid.Row="0" x:Name="e011" Grid.Column="1" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e012" Grid.Column="2" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e013" Grid.Column="3" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e014" Grid.Column="4" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e015" Grid.Column="5" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e016" Grid.Column="6" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e017" Grid.Column="7" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e018" Grid.Column="8" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e021" Grid.Column="9" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e022" Grid.Column="10" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e023" Grid.Column="11" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e024" Grid.Column="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e025" Grid.Column="13" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e026" Grid.Column="14" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e027" Grid.Column="15" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e028" Grid.Column="16" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e031" Grid.Column="17" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e032" Grid.Column="18" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e033" Grid.Column="19" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e034" Grid.Column="20" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e035" Grid.Column="21" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e036" Grid.Column="22" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e037" Grid.Column="23" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e038" Grid.Column="24" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e041" Grid.Column="25" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e042" Grid.Column="26" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e043" Grid.Column="27" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e044" Grid.Column="28" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e045" Grid.Column="29" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e046" Grid.Column="30" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e047" Grid.Column="31" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="0" x:Name="e048" Grid.Column="32" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+
+                            <!--TextBlocks B-->
+                            <TextBlock Grid.Row="1" x:Name="B011" Grid.Column="1" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B012" Grid.Column="2" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B013" Grid.Column="3" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B014" Grid.Column="4" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B015" Grid.Column="5" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B016" Grid.Column="6" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B017" Grid.Column="7" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B018" Grid.Column="8" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B021" Grid.Column="9" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B022" Grid.Column="10" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B023" Grid.Column="11" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B024" Grid.Column="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B025" Grid.Column="13" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B026" Grid.Column="14" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B027" Grid.Column="15" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B028" Grid.Column="16" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B031" Grid.Column="17" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B032" Grid.Column="18" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B033" Grid.Column="19" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B034" Grid.Column="20" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B035" Grid.Column="21" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B036" Grid.Column="22" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B037" Grid.Column="23" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B038" Grid.Column="24" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B041" Grid.Column="25" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B042" Grid.Column="26" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B043" Grid.Column="27" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B044" Grid.Column="28" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B045" Grid.Column="29" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B046" Grid.Column="30" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B047" Grid.Column="31" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="1" x:Name="B048" Grid.Column="32" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+
+                            <!--TextBlocks G-->
+                            <TextBlock Grid.Row="2" x:Name="G011" Grid.Column="1" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G012" Grid.Column="2" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G013" Grid.Column="3" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G014" Grid.Column="4" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G015" Grid.Column="5" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G016" Grid.Column="6" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G017" Grid.Column="7" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G018" Grid.Column="8" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G021" Grid.Column="9" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G022" Grid.Column="10" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G023" Grid.Column="11" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G024" Grid.Column="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G025" Grid.Column="13" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G026" Grid.Column="14" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G027" Grid.Column="15" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G028" Grid.Column="16" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G031" Grid.Column="17" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G032" Grid.Column="18" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G033" Grid.Column="19" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G034" Grid.Column="20" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G035" Grid.Column="21" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G036" Grid.Column="22" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G037" Grid.Column="23" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G038" Grid.Column="24" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G041" Grid.Column="25" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G042" Grid.Column="26" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G043" Grid.Column="27" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G044" Grid.Column="28" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G045" Grid.Column="29" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G046" Grid.Column="30" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G047" Grid.Column="31" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="2" x:Name="G048" Grid.Column="32" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+
+                            <!--TextBlocks D-->
+                            <TextBlock Grid.Row="3" x:Name="D011" Grid.Column="1" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D012" Grid.Column="2" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D013" Grid.Column="3" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D014" Grid.Column="4" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D015" Grid.Column="5" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D016" Grid.Column="6" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D017" Grid.Column="7" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D018" Grid.Column="8" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D021" Grid.Column="9" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D022" Grid.Column="10" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D023" Grid.Column="11" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D024" Grid.Column="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D025" Grid.Column="13" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D026" Grid.Column="14" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D027" Grid.Column="15" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D028" Grid.Column="16" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D031" Grid.Column="17" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D032" Grid.Column="18" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D033" Grid.Column="19" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D034" Grid.Column="20" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D035" Grid.Column="21" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D036" Grid.Column="22" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D037" Grid.Column="23" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D038" Grid.Column="24" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D041" Grid.Column="25" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D042" Grid.Column="26" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D043" Grid.Column="27" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D044" Grid.Column="28" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D045" Grid.Column="29" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D046" Grid.Column="30" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D047" Grid.Column="31" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="3" x:Name="D048" Grid.Column="32" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+
+                            <!--TextBlocks A-->
+                            <TextBlock Grid.Row="4" x:Name="A011" Grid.Column="1" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A012" Grid.Column="2" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A013" Grid.Column="3" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A014" Grid.Column="4" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A015" Grid.Column="5" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A016" Grid.Column="6" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A017" Grid.Column="7" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A018" Grid.Column="8" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A021" Grid.Column="9" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A022" Grid.Column="10" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A023" Grid.Column="11" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A024" Grid.Column="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A025" Grid.Column="13" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A026" Grid.Column="14" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A027" Grid.Column="15" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A028" Grid.Column="16" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A031" Grid.Column="17" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A032" Grid.Column="18" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A033" Grid.Column="19" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A034" Grid.Column="20" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A035" Grid.Column="21" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A036" Grid.Column="22" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A037" Grid.Column="23" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A038" Grid.Column="24" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A041" Grid.Column="25" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A042" Grid.Column="26" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A043" Grid.Column="27" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A044" Grid.Column="28" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A045" Grid.Column="29" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A046" Grid.Column="30" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A047" Grid.Column="31" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="4" x:Name="A048" Grid.Column="32" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+
+                            <!--TextBlocks E-->
+                            <TextBlock Grid.Row="5" x:Name="E011" Grid.Column="1" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E012" Grid.Column="2" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E013" Grid.Column="3" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E014" Grid.Column="4" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E015" Grid.Column="5" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E016" Grid.Column="6" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E017" Grid.Column="7" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E018" Grid.Column="8" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E021" Grid.Column="9" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E022" Grid.Column="10" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E023" Grid.Column="11" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E024" Grid.Column="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E025" Grid.Column="13" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E026" Grid.Column="14" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E027" Grid.Column="15" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E028" Grid.Column="16" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E031" Grid.Column="17" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E032" Grid.Column="18" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E033" Grid.Column="19" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E034" Grid.Column="20" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E035" Grid.Column="21" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E036" Grid.Column="22" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E037" Grid.Column="23" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E038" Grid.Column="24" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E041" Grid.Column="25" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E042" Grid.Column="26" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E043" Grid.Column="27" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E044" Grid.Column="28" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E045" Grid.Column="29" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E046" Grid.Column="30" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E047" Grid.Column="31" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+                            <TextBlock Grid.Row="5" x:Name="E048" Grid.Column="32" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI Semibold" AllowDrop="True" MouseEnter="Tab_MouseEnter" MouseLeave="Tab_MouseLeave" MouseLeftButtonDown="Tab_MouseLeft" MouseRightButtonDown="Tab_MouseRight"/>
+
+
+                        </Grid>
+                    </Border>
+
+                    <Border x:Name="DisplayLayer">
+                        <Grid x:Name="DisplayTabSheet">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.3125*"/>
+
+                                <!--BUFFER FIRST-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--1-->
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <ColumnDefinition Width="0.625*"/>
+                                <!--8-->
+
+                                <ColumnDefinition Width="1.3125*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="2.4*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Provides Tab Sheet outlines required of display layer-->
+                            <!--BarSeparators-->
+                            <Border BorderBrush="#000" BorderThickness="1,0,0,0" Grid.Column="1" Grid.Row="1" Grid.RowSpan="5"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0,1,0" Grid.Column="8" Grid.Row="1" Grid.RowSpan="5"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0,1,0" Grid.Column="16" Grid.Row="1" Grid.RowSpan="5"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0,1,0" Grid.Column="24" Grid.Row="1" Grid.RowSpan="5"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0,1,0" Grid.Column="32" Grid.Row="1" Grid.RowSpan="5"/>
+                            <!--Guitar String lines-->
+                            <Border BorderBrush="#000" BorderThickness="0,0.5,0,0" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="32"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0.5,0,0" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="32"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0.5,0,0" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="32"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0.5,0,0" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="32"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0.5,0,0" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="32"/>
+                            <Border BorderBrush="#000" BorderThickness="0,0.5,0,0" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="32"/>
+
+
+                        </Grid>
+                    </Border>
+
+                </Grid>
+
+                <Border Grid.Row="3" x:Name="NoteSelectorBarContainer">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" x:Name="GuitarNeckPanel" BorderBrush="#000" BorderThickness="1px">
+                            <Grid>
+                                <Grid.Background>
+                                    <ImageBrush ImageSource="./assets/guitar24fret.png"/>
+                                </Grid.Background>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.0*"/>
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="0.35*"/>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <!-- 24 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <!-- 23 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <!-- 22 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="0.65*"/>
+                                    <!-- 21 -->
+                                    <ColumnDefinition Width="0.40*"/>
+                                    <ColumnDefinition Width="0.75*"/>
+                                    <!-- 20 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="0.75*"/>
+                                    <!-- 19 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="0.8*"/>
+                                    <!-- 18 -->
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="0.95*"/>
+                                    <!-- 17 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="1.05*"/>
+                                    <!-- 16 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="1.1*"/>
+                                    <!-- 15 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="1.2*"/>
+                                    <!-- 14 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="1.3*"/>
+                                    <!-- 13 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="1.4*"/>
+                                    <!-- 12 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <!-- 11 -->
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="1.65*"/>
+                                    <!-- 10 -->
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="1.8*"/>
+                                    <!-- 9 -->
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <ColumnDefinition Width="1.9*"/>
+                                    <!-- 8 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <!-- 7 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="2.15*"/>
+                                    <!-- 6 -->
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="2.3*"/>
+                                    <!-- 5 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="2.45*"/>
+                                    <!-- 4 -->
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="2.6*"/>
+                                    <!-- 3 -->
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="2.8*"/>
+                                    <!-- 2 -->
+                                    <ColumnDefinition Width="0.45*"/>
+                                    <ColumnDefinition Width="3.05*"/>
+                                    <!-- 1 -->
+                                    <ColumnDefinition Width="0.2*"/>
+                                    <ColumnDefinition Width="0.4*"/>
+                                    <!-- 0 -->
+                                    <ColumnDefinition Width="0.85*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="0.85*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <!-- E -->
+                                    <RowDefinition Height="1.5*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <!-- A -->
+                                    <RowDefinition Height="1.5*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <!-- D -->
+                                    <RowDefinition Height="1.52*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <!-- G -->
+                                    <RowDefinition Height="1.5*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <!-- B -->
+                                    <RowDefinition Height="1.53*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <!-- e -->
+                                    <RowDefinition Height="0.9*"/>
+                                    <RowDefinition Height="0.45*"/>
+                                    <RowDefinition Height="2.0*"/>
+                                    <RowDefinition Height="0.45*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Green Colour: "#FF6BF955", Red Colour: "#FFC90000" Grey Colour: "#FF999999"-->
+
+                                <!--E-->
+                                <Button Grid.Column="51" x:Name="E0" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="49" x:Name="E1" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="47" x:Name="E2" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="45" x:Name="E3" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="43" x:Name="E4" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="41" x:Name="E5" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="39" x:Name="E6" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="37" x:Name="E7" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="35" x:Name="E8" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="33" x:Name="E9" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="31" x:Name="E10" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="29" x:Name="E11" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="27" x:Name="E12" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="25" x:Name="E13" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="23" x:Name="E14" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="21" x:Name="E15" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="19" x:Name="E16" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="17" x:Name="E17" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="15" x:Name="E18" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="13" x:Name="E19" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="11" x:Name="E20" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="9" x:Name="E21" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="7" x:Name="E22" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="5" x:Name="E23" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="3" x:Name="E24" Grid.Row="2" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+
+                                <!--A-->
+                                <Button Grid.Column="51" x:Name="A0" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="49" x:Name="A1" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="47" x:Name="A2" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="45" x:Name="A3" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="43" x:Name="A4" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="41" x:Name="A5" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="39" x:Name="A6" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="37" x:Name="A7" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="35" x:Name="A8" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="33" x:Name="A9" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="31" x:Name="A10" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="29" x:Name="A11" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="27" x:Name="A12" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="25" x:Name="A13" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="23" x:Name="A14" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="21" x:Name="A15" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="19" x:Name="A16" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="17" x:Name="A17" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="15" x:Name="A18" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="13" x:Name="A19" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="11" x:Name="A20" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="9" x:Name="A21" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="7" x:Name="A22" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="5" x:Name="A23" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="3" x:Name="A24" Grid.Row="4" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+
+                                <!--D-->
+                                <Button Grid.Column="51" x:Name="D0" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="49" x:Name="D1" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="47" x:Name="D2" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="45" x:Name="D3" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="43" x:Name="D4" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="41" x:Name="D5" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="39" x:Name="D6" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="37" x:Name="D7" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="35" x:Name="D8" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="33" x:Name="D9" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="31" x:Name="D10" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="29" x:Name="D11" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="27" x:Name="D12" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="25" x:Name="D13" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="23" x:Name="D14" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="21" x:Name="D15" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="19" x:Name="D16" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="17" x:Name="D17" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="15" x:Name="D18" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="13" x:Name="D19" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="11" x:Name="D20" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="9" x:Name="D21" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="7" x:Name="D22" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="5" x:Name="D23" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="3" x:Name="D24" Grid.Row="6" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+
+                                <!--G-->
+                                <Button Grid.Column="51" x:Name="G0" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="49" x:Name="G1" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="47" x:Name="G2" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="45" x:Name="G3" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="43" x:Name="G4" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="41" x:Name="G5" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="39" x:Name="G6" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="37" x:Name="G7" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="35" x:Name="G8" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="33" x:Name="G9" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="31" x:Name="G10" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="29" x:Name="G11" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="27" x:Name="G12" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="25" x:Name="G13" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="23" x:Name="G14" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="21" x:Name="G15" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="19" x:Name="G16" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="17" x:Name="G17" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="15" x:Name="G18" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="13" x:Name="G19" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="11" x:Name="G20" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="9" x:Name="G21" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="7" x:Name="G22" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="5" x:Name="G23" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="3" x:Name="G24" Grid.Row="8" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+
+                                <!--B-->
+                                <Button Grid.Column="51" x:Name="B0" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="49" x:Name="B1" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="47" x:Name="B2" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="45" x:Name="B3" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="43" x:Name="B4" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="41" x:Name="B5" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="39" x:Name="B6" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="37" x:Name="B7" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="35" x:Name="B8" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="33" x:Name="B9" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="31" x:Name="B10" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="29" x:Name="B11" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="27" x:Name="B12" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="25" x:Name="B13" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="23" x:Name="B14" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="21" x:Name="B15" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="19" x:Name="B16" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="17" x:Name="B17" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="15" x:Name="B18" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="13" x:Name="B19" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="11" x:Name="B20" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="9" x:Name="B21" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="7" x:Name="B22" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="5" x:Name="B23" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="3" x:Name="B24" Grid.Row="10" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+
+                                <!--e-->
+                                <Button Grid.Column="51" x:Name="e0" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="49" x:Name="e1" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="47" x:Name="e2" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="45" x:Name="e3" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="43" x:Name="e4" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="41" x:Name="e5" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="39" x:Name="e6" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="37" x:Name="e7" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="35" x:Name="e8" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="33" x:Name="e9" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="31" x:Name="e10" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="29" x:Name="e11" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="27" x:Name="e12" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="25" x:Name="e13" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="23" x:Name="e14" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="21" x:Name="e15" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="19" x:Name="e16" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="17" x:Name="e17" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="15" x:Name="e18" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="13" x:Name="e19" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="11" x:Name="e20" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="9" x:Name="e21" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="7" x:Name="e22" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="5" x:Name="e23" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+                                <Button Grid.Column="3" x:Name="e24" Grid.Row="12" Background="#FFC90000" BorderBrush="#FFC90000" Foreground="#FFC90000" Click="Button_StringButton"/>
+
+                                
+
+                                <Border Grid.Column="52" Grid.Row="1" Grid.RowSpan="13">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.25*"/>
+                                            <RowDefinition Height="1.5*"/>
+                                            <RowDefinition Height="0.5*"/>
+                                            <RowDefinition Height="1.5*"/>
+                                            <RowDefinition Height="0.5*"/>
+                                            <RowDefinition Height="1.5*"/>
+                                            <RowDefinition Height="0.45*"/>
+                                            <RowDefinition Height="1.5*"/>
+                                            <RowDefinition Height="0.45*"/>
+                                            <RowDefinition Height="1.5*"/>
+                                            <RowDefinition Height="0.45*"/>
+                                            <RowDefinition Height="1.5*"/>
+                                            <RowDefinition Height="0.35*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF999999" FontFamily="Segoe UI Semibold">E</TextBlock>
+                                        <TextBlock Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF999999" FontFamily="Segoe UI Semibold">A</TextBlock>
+                                        <TextBlock Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF999999" FontFamily="Segoe UI Semibold">D</TextBlock>
+                                        <TextBlock Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF999999" FontFamily="Segoe UI Semibold">G</TextBlock>
+                                        <TextBlock Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF999999" FontFamily="Segoe UI Semibold">B</TextBlock>
+                                        <TextBlock Grid.Row="11" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF999999" FontFamily="Segoe UI Semibold">e</TextBlock>
+
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Column="1" x:Name="KTPanel" BorderBrush="#000" BorderThickness="1px">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="10.5*"/>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="4.0*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="2.1*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="4.0*"/>
+                                    <RowDefinition Height="0.5*"/>
+                                    <RowDefinition Height="1.5*"/>
+                                    <RowDefinition Height="1.5*"/>
+                                    <RowDefinition Height="2.9*"/>
+                                </Grid.RowDefinitions>
+
+                                <Border Background="#FF999999" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" BorderBrush="#000" BorderThickness="1px">
+                                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" FontFamily="Segoe UI Light">Key</TextBlock>
+                                </Border>
+
+                                <Border Background="#FFF" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="#000" BorderThickness="1px">
+
+
+                                    <ComboBox x:Name="KeySelectionBox" Background="#FFF" Opacity="1" VerticalAlignment="Stretch" BorderBrush="White" FlowDirection="LeftToRight">
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="A" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">A</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="A#" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">A#</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="B" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">B</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="C" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">C</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="C#" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">C#</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="D" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">D</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="D#" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">D#</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="E" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">E</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="F" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">F</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="F#" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">F#</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="G" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">G</TextBlock>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Background="#FFFAFAFA" Tag="G#" VerticalAlignment="Center">
+                                            <TextBlock Foreground="Black" FontFamily="Segoe UI Light" FontSize="18">G#</TextBlock>
+                                        </ComboBoxItem>
+                                    </ComboBox>
+                                </Border>
+
+                                <Border Background="#FFF" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderBrush="#000" BorderThickness="0px">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Viewbox Grid.Column="0" HorizontalAlignment="Left">
+                                            <RadioButton Grid.Column="0" x:Name="MajorRadio" Content="Major" FontFamily="Segoe UI Light" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Checked="MajorRadio_Checked">
+                                                <RadioButton.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1"/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </RadioButton.RenderTransform>
+                                            </RadioButton>
+                                        </Viewbox>
+                                        <Viewbox Grid.Column="1" HorizontalAlignment="Left">
+                                            <RadioButton Grid.Column="1" x:Name="MinorRadio" Content="Minor" FontFamily="Segoe UI Light" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Checked="MinorRadio_Checked">
+                                                <RadioButton.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1"/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </RadioButton.RenderTransform>
+                                            </RadioButton>
+                                        </Viewbox>
+                                    </Grid>
+                                </Border>
+
+
+
+                                <TextBlock x:Name="KTEnterDialogue" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Text="" Foreground="Green" />
+
+                                <Button x:Name="KTEnter" Background="#FF999999" Grid.Column="1" Grid.Row="6" Grid.RowSpan="3" Grid.ColumnSpan="3" Click="KTEnter_Click">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontFamily="Segoe UI Light">Enter</TextBlock>
+                                </Button>
+
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
